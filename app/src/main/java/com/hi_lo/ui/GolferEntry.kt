@@ -31,7 +31,6 @@ fun EnterGolfer(
   }
 }
 
-
 @Composable
 private fun NameEntry(name: MutableState<String>) {
   var nameError by remember { mutableStateOf(false) }
@@ -57,7 +56,7 @@ private fun NameEntry(name: MutableState<String>) {
 private fun HandicapEntry(handicap: MutableState<String>) {
   OutlinedTextField(
     value = handicap.value,
-    label = { Text("HCP") },
+    label = { Text("Index") },
     singleLine = true,
     onValueChange = {
       if (it.isEmpty()) {

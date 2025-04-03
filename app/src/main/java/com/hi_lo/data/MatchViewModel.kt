@@ -4,20 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-data class Team(val golfer1: Golfer = Golfer(), val golfer2: Golfer = Golfer())
+data class Team(val golfer1: Golfer, val golfer2: Golfer)
 
-data class Golfer(val name: String = "Test", val hcp: Int = (Math.random() * 36).toInt())
+class Golfer(val name: String, val hcp: Int)
 
 data class Score(val playerNumber: Int, var strokes: Int = 0, var points: Int = 0)
-
 
 class MatchViewModel : ViewModel() {
 
     private var _title: MutableLiveData<String> = MutableLiveData<String>("Course Select")
     val title: LiveData<String> get() = _title
 
-    var team1: Team = Team()
-    var team2: Team = Team()
+    var team1: Team? = null
+    var team2: Team? = null
 
     var pricePerPoint: MutableLiveData<Int> = MutableLiveData(1)
     private var selectedCourse: Course? = null
@@ -42,8 +41,22 @@ class MatchViewModel : ViewModel() {
         this._title.value = "Setup Match @ ${selectedCourse!!.name}"
     }
 
-    fun startMatch(team1: Team, team2: Team) {
-        this.team1 = team1
+    fun startMatch(
+        useCourseHandicap: Boolean,
+        name1: String,
+        hcp1: Int,
+        name2: String,
+        hcp2: Int,
+        team2: Team
+    ) {
+        if (useCourseHandicap) {
+            this.team1 = Team(Golfer(name1, hcp1), Golfer(name2, hcp2))
+        } else {
+            this.team1 = Team(
+                Golfer(name1, calculateGolferHandicap(hcp1)),
+                Golfer(name2, calculateGolferHandicap(hcp2))
+            )
+        }
         this.team2 = team2
         setTitle(1)
     }
@@ -97,6 +110,13 @@ class MatchViewModel : ViewModel() {
         team2Score.value = 0
         currentHole.value = 1
         _title.value = "Setup Match"
+    }
+
+    private fun calculateGolferHandicap(index: Int): Int {
+        selectedCourse?.let { course ->
+            return index.times(course.slope).div(113).plus(course.rating).minus(72).toInt()
+        }
+        throw IllegalStateException("Course must be selected")
     }
 
 }

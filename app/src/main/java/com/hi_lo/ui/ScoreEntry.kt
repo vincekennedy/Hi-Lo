@@ -46,8 +46,10 @@ fun EnterScore(matchViewModel: MatchViewModel, navController: NavHostController)
     verticalArrangement = Arrangement.Center
   ) {
 
-    PlayerScore(matchViewModel.team1.golfer1, hole.holeHcp, p1, holeScoreViewModel)
-    PlayerScore(matchViewModel.team1.golfer2, hole.holeHcp, p2, holeScoreViewModel)
+    matchViewModel.team1?.let {
+      PlayerScore(it.golfer1, hole.holeHcp, p1, holeScoreViewModel)
+      PlayerScore(it.golfer2, hole.holeHcp, p2, holeScoreViewModel)
+    }
 
     Row(
       Modifier.height(20.dp),
@@ -59,8 +61,10 @@ fun EnterScore(matchViewModel: MatchViewModel, navController: NavHostController)
       )
     }
 
-    PlayerScore(matchViewModel.team2.golfer1, hole.holeHcp, p3, holeScoreViewModel)
-    PlayerScore(matchViewModel.team2.golfer2, hole.holeHcp, p4, holeScoreViewModel)
+    matchViewModel.team2?.let {
+      PlayerScore(it.golfer1, hole.holeHcp, p1, holeScoreViewModel)
+      PlayerScore(it.golfer2, hole.holeHcp, p2, holeScoreViewModel)
+    }
 
     Spacer(modifier = Modifier.weight(1.0f))
     Button(modifier = Modifier

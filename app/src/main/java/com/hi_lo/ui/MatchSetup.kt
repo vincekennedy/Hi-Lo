@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
@@ -15,6 +16,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
@@ -49,13 +51,20 @@ fun SetupMatch(viewModel: MatchViewModel, navController: NavHostController) {
 
     Column(modifier = Modifier.padding(8.dp)) {
         Row {
-            Text(text = "Using Course Handicap", modifier = Modifier.fillMaxWidth())
+            Text(
+                text = "Use Course Handicap",
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .align(Alignment.CenterVertically)
+                    .padding(end = 6.dp)
+            )
             Switch(
                 checked = courseHandicap.value,
                 onCheckedChange = {
                     courseHandicap.value = it
                 })
         }
+        Spacer(modifier = Modifier.height(12.dp))
         Text("Team 1")
         EnterGolfer(name = name1, handicap = hcp1)
         EnterGolfer(name = name2, handicap = hcp2)
@@ -95,10 +104,11 @@ fun SetupMatch(viewModel: MatchViewModel, navController: NavHostController) {
                 .height(48.dp),
             onClick = {
                 viewModel.startMatch(
-                    Team(
-                        Golfer(name1.value, hcp1.value.toInt()),
-                        Golfer(name2.value, hcp2.value.toInt())
-                    ),
+                    courseHandicap.value,
+                    name1.value,
+                    hcp1.value.toInt(),
+                    name2.value,
+                    hcp2.value.toInt(),
                     Team(
                         Golfer(name3.value, hcp3.value.toInt()),
                         Golfer(name4.value, hcp4.value.toInt())
@@ -111,5 +121,4 @@ fun SetupMatch(viewModel: MatchViewModel, navController: NavHostController) {
             Text(text = "Start Match")
         }
     }
-
 }
