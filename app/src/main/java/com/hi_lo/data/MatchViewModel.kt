@@ -3,6 +3,12 @@ package com.hi_lo.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.hi_lo.data.retrofit.ApiClient
+import com.hi_lo.data.retrofit.AuthBody
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 data class Team(val golfer1: Golfer, val golfer2: Golfer)
 
@@ -24,6 +30,13 @@ class MatchViewModel : ViewModel() {
     val team1Score: MutableLiveData<Int> = MutableLiveData(0)
     val team2Score: MutableLiveData<Int> = MutableLiveData(0)
     private val currentHole: MutableLiveData<Int> = MutableLiveData(1)
+
+    fun login(email: String, password: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = ApiClient.courseService.login(AuthBody("kennedy.v@gmail.com", "test123"))
+            Timber.e("Response: ${response.body()}")
+        }
+    }
 
     fun addPointsToTeam1Score(pts: Int) {
         team1Score.value = team1Score.value?.plus(pts)

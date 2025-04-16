@@ -40,13 +40,17 @@ fun HiLoApp(
     content = { padding ->
       NavHost(
         navController = navController,
-        startDestination = MatchScreen.COURSE_SELECT.name,
+        startDestination = MatchScreen.LOGIN.name,
         modifier = modifier.padding(padding)
       ) {
+        composable(route = MatchScreen.LOGIN.name) {
+          Login(navController, matchViewModel = matchViewModel)
+//          navController.navigate(MatchScreen.COURSE_SELECT.name)
+        }
         composable(route = MatchScreen.COURSE_SELECT.name) {
           CourseSelection(matchViewModel) {
-            matchViewModel.setupMatch()
-            navController.navigate(MatchScreen.SETUP_MATCH.name)
+//            matchViewModel.setupMatch()
+//            navController.navigate(MatchScreen.SETUP_MATCH.name)
           }
         }
         composable(route = MatchScreen.SETUP_MATCH.name) {
