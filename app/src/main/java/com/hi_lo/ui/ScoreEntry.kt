@@ -47,8 +47,8 @@ fun EnterScore(matchViewModel: MatchViewModel, navController: NavHostController)
   ) {
 
     matchViewModel.team1?.let {
-      PlayerScore(it.golfer1, hole.holeHcp, p1, holeScoreViewModel)
-      PlayerScore(it.golfer2, hole.holeHcp, p2, holeScoreViewModel)
+      PlayerScore(it.golfer1, hole.holeHandicap, p1, holeScoreViewModel)
+      PlayerScore(it.golfer2, hole.holeHandicap, p2, holeScoreViewModel)
     }
 
     Row(
@@ -62,8 +62,8 @@ fun EnterScore(matchViewModel: MatchViewModel, navController: NavHostController)
     }
 
     matchViewModel.team2?.let {
-      PlayerScore(it.golfer1, hole.holeHcp, p1, holeScoreViewModel)
-      PlayerScore(it.golfer2, hole.holeHcp, p2, holeScoreViewModel)
+      PlayerScore(it.golfer1, hole.holeHandicap, p1, holeScoreViewModel)
+      PlayerScore(it.golfer2, hole.holeHandicap, p2, holeScoreViewModel)
     }
 
     Spacer(modifier = Modifier.weight(1.0f))

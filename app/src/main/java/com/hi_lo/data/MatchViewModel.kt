@@ -8,7 +8,6 @@ import com.hi_lo.data.retrofit.AuthBody
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 data class Team(val golfer1: Golfer, val golfer2: Golfer)
 
@@ -25,7 +24,7 @@ class MatchViewModel : ViewModel() {
     var team2: Team? = null
 
     var pricePerPoint: MutableLiveData<Int> = MutableLiveData(1)
-    private var selectedCourse: Course? = null
+    var selectedCourse: Course? = null
 
     val team1Score: MutableLiveData<Int> = MutableLiveData(0)
     val team2Score: MutableLiveData<Int> = MutableLiveData(0)
@@ -34,7 +33,6 @@ class MatchViewModel : ViewModel() {
     fun login(email: String, password: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = ApiClient.courseService.login(AuthBody("kennedy.v@gmail.com", "test123"))
-            Timber.e("Response: ${response.body()}")
         }
     }
 
@@ -44,10 +42,6 @@ class MatchViewModel : ViewModel() {
 
     fun addPointsToTeam2Score(pts: Int) {
         team2Score.value = team2Score.value?.plus(pts)
-    }
-
-    fun selectCourse(course: Course) {
-        this.selectedCourse = course
     }
 
     fun setupMatch() {
@@ -71,7 +65,6 @@ class MatchViewModel : ViewModel() {
             )
         }
         this.team2 = team2
-        setTitle(1)
     }
 
     fun currentHole(): Hole {
@@ -84,7 +77,6 @@ class MatchViewModel : ViewModel() {
 
     fun nextHole() {
         currentHole.value = currentHole.value?.inc()
-        setTitle(currentHole.value!!)
     }
 
     fun getFinalScore(): String {
@@ -107,16 +99,6 @@ class MatchViewModel : ViewModel() {
      * A positive value means team 1 is winning, a negative value means team two is winning
      */
     private fun currentScore() = team2Score.value?.let { team1Score.value!!.minus(it) }
-
-    /**
-     * @param value - Hole Number
-     */
-    private fun setTitle(value: Int) {
-        mapleCreek.holes[value - 1].apply {
-            _title.value =
-                "Hole $holeNum     HCP: $holeHcp     PAR: $holePar   Score : ${currentScore()}"
-        }
-    }
 
     fun resetMatch() {
         team1Score.value = 0

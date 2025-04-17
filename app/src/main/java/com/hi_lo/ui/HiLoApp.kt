@@ -49,8 +49,8 @@ fun HiLoApp(
         }
         composable(route = MatchScreen.COURSE_SELECT.name) {
           CourseSelection(matchViewModel) {
-//            matchViewModel.setupMatch()
-//            navController.navigate(MatchScreen.SETUP_MATCH.name)
+            matchViewModel.setupMatch()
+            navController.navigate(MatchScreen.SETUP_MATCH.name)
           }
         }
         composable(route = MatchScreen.SETUP_MATCH.name) {

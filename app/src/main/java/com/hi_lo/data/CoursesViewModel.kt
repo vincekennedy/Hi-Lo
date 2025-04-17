@@ -1,18 +1,22 @@
 package com.hi_lo.data
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hi_lo.data.retrofit.ApiClient
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
-class CoursesViewModel {
-    var courses: MutableLiveData<List<Course>> = MutableLiveData(null)
+class CoursesViewModel : ViewModel() {
+    private val _courses = MutableStateFlow<List<Course>>(emptyList())
+    val courses: StateFlow<List<Course>> = _courses
 
-    fun fetchCourses(): MutableLiveData<List<Course>> {
-        CoroutineScope(Dispatchers.IO).launch {
-            courses.postValue(ApiClient.courseService.getCourses("7e1cc9b936b491bd3ed838fb73e595a2a61e39ea"))
+    fun fetchCourses() {
+        viewModelScope.launch {
+            val fetchedCourses = ApiClient.courseService.getCourses("7e1cc9b936b491bd3ed838fb73e595a2a61e39ea")
+            Timber.e("Courses updated")
+            _courses.value = fetchedCourses
         }
-        return courses
     }
 }
