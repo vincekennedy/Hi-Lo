@@ -77,9 +77,9 @@ fun CourseSelectDropdown(matchViewModel: MatchViewModel, courses: List<Course>) 
                 courses.forEach { course ->
                     DropdownMenuItem(
                         onClick = {
-//                            selectedCourse = course
-//                            expanded = false
-//                            matchViewModel.selectedCourse = course // Update ViewModel
+                            selectedCourse = course
+                            expanded = false
+                            matchViewModel.selectedCourse = course // Update ViewModel
                         }
                     ) {
                         Text(text = course.name)

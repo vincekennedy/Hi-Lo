@@ -1,5 +1,7 @@
 package com.hi_lo.data
 
+import com.google.gson.annotations.SerializedName
+
 data class Course(
     val name: String,
     val slope: Int,
@@ -9,7 +11,7 @@ data class Course(
 )
 
 data class Hole(
-    val holeNumber: Int,
-    val holeHandicap: Int,
-    val holePar: Int
+    @SerializedName("hole_number") val holeNumber: Int,
+    @SerializedName("hole_handicap") val holeHandicap: Int,
+    @SerializedName("hole_par") val holePar: Int
 )
