@@ -14,17 +14,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.hi_lo.data.MatchScreen
 import com.hi_lo.data.viewmodel.LoginNavigationEvent
-import com.hi_lo.data.viewmodel.LoginViewModel
+import com.hi_lo.data.viewmodel.SessionViewModel
 
 @Composable
-fun Login(navController: NavController) {
+fun Login(navController: NavController, viewModel: SessionViewModel) {
 
-    val viewModel: LoginViewModel = viewModel()
     val uiState = viewModel.uiState.collectAsState()
 
     LaunchedEffect(Unit) {
@@ -44,14 +44,14 @@ fun Login(navController: NavController) {
             value = uiState.value.username,
             label = { Text("Email") },
             singleLine = true,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email, capitalization = KeyboardCapitalization.None),
             onValueChange = viewModel::onUsernameChange,
         )
         OutlinedTextField(
             value = uiState.value.password,
             label = { Text("Password") },
             singleLine = true,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go, keyboardType = KeyboardType.Password, ),
             onValueChange = viewModel::onPasswordChange,
         )
         Button(

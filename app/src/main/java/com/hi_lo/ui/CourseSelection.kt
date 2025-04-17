@@ -20,16 +20,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hi_lo.data.Course
 import com.hi_lo.data.viewmodel.CoursesViewModel
 import com.hi_lo.data.viewmodel.MatchViewModel
+import com.hi_lo.data.viewmodel.SessionViewModel
 
 
 @Composable
-fun CourseSelection(matchViewModel: MatchViewModel,
-                    onSetupClicked: () -> Unit) {
-    val coursesViewModel: CoursesViewModel = viewModel()
+fun CourseSelection(
+    matchViewModel: MatchViewModel,
+    sessionViewModel: SessionViewModel,
+    onSetupClicked: () -> Unit
+) {
+    val coursesViewModel = CoursesViewModel(sessionViewModel)
     val courses by coursesViewModel.courses.collectAsState(initial = emptyList())
 
     LaunchedEffect(key1 = "onLaunch") {

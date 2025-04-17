@@ -11,12 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hi_lo.data.MatchScreen
 import com.hi_lo.data.viewmodel.MatchViewModel
+import com.hi_lo.data.viewmodel.SessionViewModel
 
 
 @Composable
@@ -27,6 +29,7 @@ fun HiLoApp(
 ) {
   val scaffoldState = rememberScaffoldState()
   val title: String by matchViewModel.title.observeAsState("")
+  val sessionViewModel: SessionViewModel = viewModel()
 
   Scaffold(
     scaffoldState = scaffoldState,
@@ -44,10 +47,10 @@ fun HiLoApp(
         modifier = modifier.padding(padding)
       ) {
         composable(route = MatchScreen.LOGIN.name) {
-          Login(navController)
+          Login(navController, sessionViewModel)
         }
         composable(route = MatchScreen.COURSE_SELECT.name) {
-          CourseSelection(matchViewModel) {
+          CourseSelection(matchViewModel, sessionViewModel) {
             matchViewModel.setupMatch()
             navController.navigate(MatchScreen.SETUP_MATCH.name)
           }
