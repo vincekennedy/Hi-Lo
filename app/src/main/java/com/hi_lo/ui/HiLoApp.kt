@@ -16,14 +16,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hi_lo.data.MatchScreen
-import com.hi_lo.data.MatchViewModel
+import com.hi_lo.data.viewmodel.MatchViewModel
 
 
 @Composable
 fun HiLoApp(
-  modifier: Modifier = Modifier,
-  matchViewModel: MatchViewModel = MatchViewModel(),
-  navController: NavHostController = rememberNavController(),
+    modifier: Modifier = Modifier,
+    matchViewModel: MatchViewModel = MatchViewModel(),
+    navController: NavHostController = rememberNavController(),
 ) {
   val scaffoldState = rememberScaffoldState()
   val title: String by matchViewModel.title.observeAsState("")
@@ -44,8 +44,7 @@ fun HiLoApp(
         modifier = modifier.padding(padding)
       ) {
         composable(route = MatchScreen.LOGIN.name) {
-          Login(navController, matchViewModel = matchViewModel)
-//          navController.navigate(MatchScreen.COURSE_SELECT.name)
+          Login(navController)
         }
         composable(route = MatchScreen.COURSE_SELECT.name) {
           CourseSelection(matchViewModel) {

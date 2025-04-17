@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.hi_lo.data.MatchScreen
-import com.hi_lo.data.MatchViewModel
+import com.hi_lo.data.viewmodel.MatchViewModel
 
 @Composable
 fun ScoringSummary(

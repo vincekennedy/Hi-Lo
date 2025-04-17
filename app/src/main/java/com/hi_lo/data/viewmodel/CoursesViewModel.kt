@@ -1,12 +1,12 @@
-package com.hi_lo.data
+package com.hi_lo.data.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hi_lo.data.Course
 import com.hi_lo.data.retrofit.ApiClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class CoursesViewModel : ViewModel() {
     private val _courses = MutableStateFlow<List<Course>>(emptyList())
@@ -15,7 +15,6 @@ class CoursesViewModel : ViewModel() {
     fun fetchCourses() {
         viewModelScope.launch {
             val fetchedCourses = ApiClient.courseService.getCourses("7e1cc9b936b491bd3ed838fb73e595a2a61e39ea")
-            Timber.e("Courses updated")
             _courses.value = fetchedCourses
         }
     }

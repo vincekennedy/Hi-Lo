@@ -24,10 +24,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavHostController
-import com.hi_lo.data.Golfer
+import com.hi_lo.data.viewmodel.Golfer
 import com.hi_lo.data.MatchScreen.SCORE
-import com.hi_lo.data.MatchViewModel
-import com.hi_lo.data.Team
+import com.hi_lo.data.viewmodel.MatchViewModel
+import com.hi_lo.data.viewmodel.Team
 
 @Composable
 fun SetupMatch(viewModel: MatchViewModel, navController: NavHostController) {

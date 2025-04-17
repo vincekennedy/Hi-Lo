@@ -10,60 +10,56 @@ import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.hi_lo.data.MatchScreen
-import com.hi_lo.data.MatchViewModel
+import com.hi_lo.data.viewmodel.LoginNavigationEvent
+import com.hi_lo.data.viewmodel.LoginViewModel
 
 @Composable
-fun Login(navController: NavController, matchViewModel: MatchViewModel) {
-    val email: MutableState<String> = remember {
-        mutableStateOf("")
+fun Login(navController: NavController) {
+
+    val viewModel: LoginViewModel = viewModel()
+    val uiState = viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.navigationEvent.collect { event ->
+            when (event) {
+                is LoginNavigationEvent.NavigateToCourseSelect -> {
+                    navController.navigate(MatchScreen.COURSE_SELECT.name)
+                }
+            }
+        }
     }
-    val password: MutableState<String> = remember {
-        mutableStateOf("")
-    }
+
     Column(modifier = Modifier.padding(8.dp)) {
         Text("Login")
         Spacer(modifier = Modifier.height(20.dp))
         OutlinedTextField(
-            value = email.value,
+            value = uiState.value.username,
             label = { Text("Email") },
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-            onValueChange = {
-                if (it.isNotEmpty()) {
-                    email.value = it
-                } else {
-                    email.value = ""
-                }
-            },
+            onValueChange = viewModel::onUsernameChange,
         )
         OutlinedTextField(
-            value = password.value,
+            value = uiState.value.password,
             label = { Text("Password") },
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-            onValueChange = {
-                if (it.isNotEmpty()) {
-                    password.value = it
-                } else {
-                    password.value = ""
-                }
-            },
+            onValueChange = viewModel::onPasswordChange,
         )
-        Button(modifier = Modifier
-            .fillMaxWidth()
-            .height(48.dp),
-            onClick = {
-                matchViewModel.login("kennedy.v@gmail.com", "test123")
-                navController.navigate(MatchScreen.COURSE_SELECT.name)
-            }) {
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            onClick = viewModel::login
+        ) {
             Text(text = "Login")
         }
     }

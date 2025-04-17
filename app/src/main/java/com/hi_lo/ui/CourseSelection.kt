@@ -22,9 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hi_lo.data.Course
-import com.hi_lo.data.CoursesViewModel
-import com.hi_lo.data.MatchViewModel
-import timber.log.Timber
+import com.hi_lo.data.viewmodel.CoursesViewModel
+import com.hi_lo.data.viewmodel.MatchViewModel
 
 
 @Composable
@@ -32,7 +31,6 @@ fun CourseSelection(matchViewModel: MatchViewModel,
                     onSetupClicked: () -> Unit) {
     val coursesViewModel: CoursesViewModel = viewModel()
     val courses by coursesViewModel.courses.collectAsState(initial = emptyList())
-    Timber.e("Courses : $courses")
 
     LaunchedEffect(key1 = "onLaunch") {
         coursesViewModel.fetchCourses()

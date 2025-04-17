@@ -1,4 +1,4 @@
-package com.hi_lo.data
+package com.hi_lo.data.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
