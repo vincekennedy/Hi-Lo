@@ -20,10 +20,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.hi_lo.data.Course
 import com.hi_lo.data.viewmodel.CoursesViewModel
 import com.hi_lo.data.viewmodel.MatchViewModel
 import com.hi_lo.data.viewmodel.SessionViewModel
+import timber.log.Timber
 
 
 @Composable
@@ -32,11 +34,16 @@ fun CourseSelection(
     sessionViewModel: SessionViewModel,
     onSetupClicked: () -> Unit
 ) {
-    val coursesViewModel = CoursesViewModel(sessionViewModel)
+    val coursesViewModel: CoursesViewModel = hiltViewModel()
     val courses by coursesViewModel.courses.collectAsState(initial = emptyList())
 
     LaunchedEffect(key1 = "onLaunch") {
-        coursesViewModel.fetchCourses()
+        val token = sessionViewModel.getSessionToken()
+        if (token != null) {
+            coursesViewModel.fetchCourses(token)
+        } else {
+            Timber.e("Token is null")
+        }
     }
     Column(modifier = Modifier.padding(8.dp)) {
         CourseSelectDropdown(matchViewModel, courses)
