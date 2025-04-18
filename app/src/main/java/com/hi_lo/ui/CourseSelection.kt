@@ -24,26 +24,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hi_lo.data.Course
 import com.hi_lo.data.viewmodel.CoursesViewModel
 import com.hi_lo.data.viewmodel.MatchViewModel
-import com.hi_lo.data.viewmodel.SessionViewModel
-import timber.log.Timber
 
 
 @Composable
 fun CourseSelection(
-    matchViewModel: MatchViewModel,
-    sessionViewModel: SessionViewModel,
+    matchViewModel: MatchViewModel = hiltViewModel(),
     onSetupClicked: () -> Unit
 ) {
+
     val coursesViewModel: CoursesViewModel = hiltViewModel()
+    val uiState by coursesViewModel.uiState.collectAsState()
     val courses by coursesViewModel.courses.collectAsState(initial = emptyList())
 
     LaunchedEffect(key1 = "onLaunch") {
-        val token = sessionViewModel.getSessionToken()
-        if (token != null) {
-            coursesViewModel.fetchCourses(token)
-        } else {
-            Timber.e("Token is null")
-        }
+        coursesViewModel.fetchCourses()
     }
     Column(modifier = Modifier.padding(8.dp)) {
         CourseSelectDropdown(matchViewModel, courses)

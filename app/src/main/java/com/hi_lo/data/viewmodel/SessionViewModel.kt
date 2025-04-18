@@ -2,8 +2,6 @@ package com.hi_lo.data.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hi_lo.data.retrofit.ApiClient
-import com.hi_lo.data.retrofit.AuthBody
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,14 +22,14 @@ sealed class LoginNavigationEvent {
 }
 
 @HiltViewModel
-class SessionViewModel @Inject constructor() : ViewModel() {
+class SessionViewModel @Inject constructor(
+//    private val sessionManager: SessionManager
+) : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState
 
     private val _navigationEvent = MutableSharedFlow<LoginNavigationEvent>()
     val navigationEvent: SharedFlow<LoginNavigationEvent> = _navigationEvent
-
-    private var sessionToken: String? = null
 
     fun onUsernameChange(newUsername: String) {
         _uiState.value = _uiState.value.copy(username = newUsername)
@@ -51,34 +49,29 @@ class SessionViewModel @Inject constructor() : ViewModel() {
         _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
 
         viewModelScope.launch {
-            try {
-                val response = ApiClient.courseService.login(
-                    AuthBody(
-                        _uiState.value.username,
-                        _uiState.value.password
-                    )
-                )
-                if (response.isSuccessful && response.body() != null) {
-                    _navigationEvent.emit(LoginNavigationEvent.NavigateToCourseSelect)
-                    setSessionToken(response.body()!!.token)
-                } else {
-                    _uiState.value =
-                        _uiState.value.copy(errorMessage = "Invalid username or password")
-                }
-            } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(errorMessage = "An error occurred")
-            } finally {
-                _uiState.value = _uiState.value.copy(isLoading = false)
-            }
+//            try {
+//                val response = ApiClient.courseService.login(
+//                    AuthBody(
+//                        _uiState.value.username,
+//                        _uiState.value.password
+//                    )
+//                )
+//                if (response.isSuccessful && response.body() != null) {
+//                    _navigationEvent.emit(LoginNavigationEvent.NavigateToCourseSelect)
+//                    setSessionToken(response.body()!!.token)
+//                } else {
+//                    _uiState.value =
+//                        _uiState.value.copy(errorMessage = "Invalid username or password")
+//                }
+//            } catch (e: Exception) {
+//                _uiState.value = _uiState.value.copy(errorMessage = "An error occurred")
+//            } finally {
+//                _uiState.value = _uiState.value.copy(isLoading = false)
+//            }
         }
     }
 
-    fun setSessionToken(token: String) {
-        sessionToken = token
-    }
-
-    // Method to retrieve the session token
-    fun getSessionToken(): String? {
-        return sessionToken
+    private fun setSessionToken(token: String) {
+//        sessionManager.saveSessionToken(token)
     }
 }

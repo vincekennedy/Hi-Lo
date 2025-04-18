@@ -27,43 +27,43 @@ fun HiLoApp(
     matchViewModel: MatchViewModel = MatchViewModel(),
     navController: NavHostController = rememberNavController(),
 ) {
-  val scaffoldState = rememberScaffoldState()
-  val title: String by matchViewModel.title.observeAsState("")
-  val sessionViewModel: SessionViewModel = viewModel()
+    val scaffoldState = rememberScaffoldState()
+    val title: String by matchViewModel.title.observeAsState("")
+    val sessionViewModel: SessionViewModel = viewModel()
 
-  Scaffold(
-    scaffoldState = scaffoldState,
-    topBar = {
-      TopAppBar(
-        navigationIcon = null, title = {
-          Text(text = title)
-        }, backgroundColor = MaterialTheme.colors.primarySurface
-      )
-    },
-    content = { padding ->
-      NavHost(
-        navController = navController,
-        startDestination = MatchScreen.LOGIN.name,
-        modifier = modifier.padding(padding)
-      ) {
-        composable(route = MatchScreen.LOGIN.name) {
-          Login(navController, sessionViewModel)
-        }
-        composable(route = MatchScreen.COURSE_SELECT.name) {
-          CourseSelection(matchViewModel, sessionViewModel) {
-            matchViewModel.setupMatch()
-            navController.navigate(MatchScreen.SETUP_MATCH.name)
-          }
-        }
-        composable(route = MatchScreen.SETUP_MATCH.name) {
-          SetupMatch(matchViewModel, navController)
-        }
-        composable(route = MatchScreen.SCORE.name) {
-          EnterScore(matchViewModel, navController)
-        }
-        composable(route = MatchScreen.SUMMARY.name) {
-          ScoringSummary(matchViewModel, navController)
-        }
-      }
-    })
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            TopAppBar(
+                navigationIcon = null, title = {
+                    Text(text = title)
+                }, backgroundColor = MaterialTheme.colors.primarySurface
+            )
+        },
+        content = { padding ->
+            NavHost(
+                navController = navController,
+                startDestination = MatchScreen.LOGIN.name,
+                modifier = modifier.padding(padding)
+            ) {
+                composable(route = MatchScreen.LOGIN.name) {
+                    Login(navController, sessionViewModel)
+                }
+                composable(route = MatchScreen.COURSE_SELECT.name) {
+                    CourseSelection {
+                        matchViewModel.setupMatch()
+                        navController.navigate(MatchScreen.SETUP_MATCH.name)
+                    }
+                }
+                composable(route = MatchScreen.SETUP_MATCH.name) {
+                    SetupMatch(matchViewModel, navController)
+                }
+                composable(route = MatchScreen.SCORE.name) {
+                    EnterScore(matchViewModel, navController)
+                }
+                composable(route = MatchScreen.SUMMARY.name) {
+                    ScoringSummary(matchViewModel, navController)
+                }
+            }
+        })
 }

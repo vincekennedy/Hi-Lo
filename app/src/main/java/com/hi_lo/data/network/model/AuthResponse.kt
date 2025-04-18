@@ -1,3 +1,3 @@
-package com.hi_lo.data.retrofit
+package com.hi_lo.data.network.model
 
 data class AuthResponse(val token: String)
