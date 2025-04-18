@@ -1,3 +1,3 @@
-package com.hi_lo.data.network.model
+package com.hi_lo
 
 data class AuthResponse(val token: String)

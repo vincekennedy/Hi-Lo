@@ -21,9 +21,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hi_lo.data.Course
-import com.hi_lo.data.viewmodel.CoursesViewModel
-import com.hi_lo.data.viewmodel.MatchViewModel
+import com.hi_lo.Course
+import com.hi_lo.CoursesViewModel
+import com.hi_lo.MatchViewModel
 
 
 @Composable

@@ -1,8 +1,5 @@
-package com.hi_lo.data
+package com.hi_lo
 
-import com.hi_lo.data.Course
-import com.hi_lo.data.network.model.AuthBody
-import com.hi_lo.data.network.model.AuthResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

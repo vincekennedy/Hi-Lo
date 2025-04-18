@@ -1,9 +1,7 @@
-package com.hi_lo.data.viewmodel
+package com.hi_lo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hi_lo.data.Course
-import com.hi_lo.data.CourseService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

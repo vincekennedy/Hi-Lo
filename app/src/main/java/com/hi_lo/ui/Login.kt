@@ -23,10 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.hi_lo.data.MatchScreen
-import com.hi_lo.data.viewmodel.LoginNavigationEvent
-import com.hi_lo.data.viewmodel.SessionViewModel
+import com.hi_lo.LoginNavigationEvent
+import com.hi_lo.MatchScreen
+import com.hi_lo.SessionViewModel
 
 @Composable
 fun Login(navController: NavController, viewModel: SessionViewModel) {
@@ -89,5 +88,5 @@ fun Login(navController: NavController, viewModel: SessionViewModel) {
 @Preview(showBackground = true)
 @Composable
 fun LoginPreview() {
-    Login(navController = rememberNavController(), viewModel = SessionViewModel())
+//    Login(navController = rememberNavController(), viewModel = SessionViewModel(s))
 }

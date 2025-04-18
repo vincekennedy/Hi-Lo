@@ -23,17 +23,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
-import com.hi_lo.data.viewmodel.Golfer
-import com.hi_lo.data.viewmodel.HoleViewModel
-import com.hi_lo.data.viewmodel.Score
+import com.hi_lo.Golfer
+import com.hi_lo.HoleViewModel
+import com.hi_lo.Score
 
 
 @Composable
 fun PlayerScore(
-    golfer: Golfer,
-    hcp: Int,
-    playerScore: MutableState<Score>,
-    holeScore: HoleViewModel
+  golfer: Golfer,
+  hcp: Int,
+  playerScore: MutableState<Score>,
+  holeScore: HoleViewModel
 ) {
 
   val strokes = if (golfer.hcp >= hcp) {
@@ -101,9 +101,9 @@ fun PointEntry(playerScore: MutableState<Score>, holeScore: HoleViewModel) {
 
 @Composable
 fun LabeledCheckbox(
-    label: String,
-    playerScore: MutableState<Score>,
-    winningPlayerNumber: MutableLiveData<Int>? = null
+  label: String,
+  playerScore: MutableState<Score>,
+  winningPlayerNumber: MutableLiveData<Int>? = null
 ) {
   val isChecked = remember { mutableStateOf(false) }
 

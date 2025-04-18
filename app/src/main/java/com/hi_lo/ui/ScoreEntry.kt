@@ -19,11 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.hi_lo.data.viewmodel.HoleViewModel
-import com.hi_lo.data.MatchScreen.SCORE
-import com.hi_lo.data.MatchScreen.SUMMARY
-import com.hi_lo.data.viewmodel.MatchViewModel
-import com.hi_lo.data.viewmodel.Score
+import com.hi_lo.HoleViewModel
+import com.hi_lo.MatchScreen.SCORE
+import com.hi_lo.MatchScreen.SUMMARY
+import com.hi_lo.MatchViewModel
+import com.hi_lo.Score
 import java.lang.Integer.max
 import kotlin.math.min
 

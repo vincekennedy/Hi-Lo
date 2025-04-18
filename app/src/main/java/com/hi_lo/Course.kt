@@ -1,4 +1,4 @@
-package com.hi_lo.data
+package com.hi_lo
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,4 +1,4 @@
-package com.hi_lo.data
+package com.hi_lo
 
 enum class MatchScreen {
     LOGIN,

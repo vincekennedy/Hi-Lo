@@ -1,3 +1,5 @@
+package com.hi_lo
+
 import android.content.Context
 import android.content.SharedPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
