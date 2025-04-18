@@ -23,9 +23,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.MutableLiveData
-import com.hi_lo.Golfer
-import com.hi_lo.HoleViewModel
-import com.hi_lo.Score
+import com.hi_lo.viewmodel.Golfer
+import com.hi_lo.viewmodel.HoleViewModel
+import com.hi_lo.viewmodel.Score
 
 
 @Composable

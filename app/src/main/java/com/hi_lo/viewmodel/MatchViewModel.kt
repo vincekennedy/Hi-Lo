@@ -1,8 +1,10 @@
-package com.hi_lo
+package com.hi_lo.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.hi_lo.Course
+import com.hi_lo.Hole
 
 data class Team(val golfer1: Golfer, val golfer2: Golfer)
 

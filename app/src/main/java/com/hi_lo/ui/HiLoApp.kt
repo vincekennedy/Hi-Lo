@@ -16,9 +16,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.hi_lo.MatchScreen
-import com.hi_lo.MatchViewModel
-import com.hi_lo.SessionViewModel
+import com.hi_lo.viewmodel.MatchViewModel
+import com.hi_lo.viewmodel.SessionViewModel
 
 
 @Composable

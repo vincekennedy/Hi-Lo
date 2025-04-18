@@ -1,7 +1,9 @@
-package com.hi_lo
+package com.hi_lo.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hi_lo.network.CourseService
+import com.hi_lo.SessionManager
 import com.hi_lo.network.AuthBody
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

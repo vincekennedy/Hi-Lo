@@ -23,9 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.hi_lo.LoginNavigationEvent
-import com.hi_lo.MatchScreen
-import com.hi_lo.SessionViewModel
+import com.hi_lo.viewmodel.LoginNavigationEvent
+import com.hi_lo.viewmodel.SessionViewModel
 
 @Composable
 fun Login(navController: NavController, viewModel: SessionViewModel) {

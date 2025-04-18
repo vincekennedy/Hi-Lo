@@ -1,4 +1,4 @@
-package com.hi_lo
+package com.hi_lo.ui
 
 enum class MatchScreen {
     LOGIN,

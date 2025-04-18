@@ -1,6 +1,7 @@
-package com.hi_lo
+package com.hi_lo.network
 
 import android.content.Context
+import com.hi_lo.SessionManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
