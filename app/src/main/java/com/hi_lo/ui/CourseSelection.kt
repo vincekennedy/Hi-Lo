@@ -3,14 +3,12 @@ package com.hi_lo.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Text
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -29,34 +27,50 @@ import com.hi_lo.viewmodel.MatchViewModel
 @Composable
 fun CourseSelection(
     matchViewModel: MatchViewModel = hiltViewModel(),
+    coursesViewModel: CoursesViewModel = hiltViewModel(),
     onSetupClicked: () -> Unit
 ) {
 
-    val coursesViewModel: CoursesViewModel = hiltViewModel()
     val uiState by coursesViewModel.uiState.collectAsState()
-    val courses by coursesViewModel.courses.collectAsState(initial = emptyList())
+    val selectedCourse = matchViewModel.selectedCourse.value
 
     LaunchedEffect(key1 = "onLaunch") {
         coursesViewModel.fetchCourses()
     }
-    Column(modifier = Modifier.padding(8.dp)) {
-        CourseSelectDropdown(matchViewModel, courses)
-        Spacer(modifier = Modifier.height(20.dp))
-        Button(modifier = Modifier
-            .fillMaxWidth()
-            .height(48.dp),
-            onClick = {
-                onSetupClicked()
-            }) {
-            Text(text = "Setup Match")
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text(
+            text = "Select a Course",
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        when {
+            uiState.isLoading -> {
+                Text("Loading courses...")
+            }
+
+            uiState.error != null -> {
+                Text("Error loading courses: ${uiState.error}")
+            }
+
+            else -> {
+                CourseSelectDropdown(
+                    courses = uiState.courses,
+                    selectedCourse = selectedCourse,
+                    onCourseSelected = { matchViewModel.selectCourse(it) }
+                )
+            }
         }
     }
 }
 
 @Composable
-fun CourseSelectDropdown(matchViewModel: MatchViewModel, courses: List<Course>) {
+fun CourseSelectDropdown(
+    courses: List<Course>,
+    selectedCourse: Course?,
+    onCourseSelected: (Course) -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedCourse by remember { mutableStateOf<Course?>(null) }
 
     Box {
         if (courses.isEmpty()) {
@@ -79,9 +93,8 @@ fun CourseSelectDropdown(matchViewModel: MatchViewModel, courses: List<Course>) 
                 courses.forEach { course ->
                     DropdownMenuItem(
                         onClick = {
-                            selectedCourse = course
+                            onCourseSelected(course)
                             expanded = false
-                            matchViewModel.selectedCourse = course // Update ViewModel
                         }
                     ) {
                         Text(text = course.name)

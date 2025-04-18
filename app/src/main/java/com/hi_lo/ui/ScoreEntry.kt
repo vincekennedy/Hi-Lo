@@ -19,9 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.hi_lo.viewmodel.HoleViewModel
 import com.hi_lo.ui.MatchScreen.SCORE
 import com.hi_lo.ui.MatchScreen.SUMMARY
+import com.hi_lo.viewmodel.HoleViewModel
 import com.hi_lo.viewmodel.MatchViewModel
 import com.hi_lo.viewmodel.Score
 import java.lang.Integer.max
@@ -30,7 +30,7 @@ import kotlin.math.min
 
 @Composable
 fun EnterScore(matchViewModel: MatchViewModel, navController: NavHostController) {
-  val hole = matchViewModel.currentHole()
+//  val hole = matchViewModel.currentHole()
   val showConfirmation = remember { mutableStateOf(false) }
   val p1 = remember { mutableStateOf(Score(1)) }
   val p2 = remember { mutableStateOf(Score(2)) }
@@ -47,8 +47,8 @@ fun EnterScore(matchViewModel: MatchViewModel, navController: NavHostController)
   ) {
 
     matchViewModel.team1?.let {
-      PlayerScore(it.golfer1, hole.holeHandicap, p1, holeScoreViewModel)
-      PlayerScore(it.golfer2, hole.holeHandicap, p2, holeScoreViewModel)
+//      PlayerScore(it.golfer1, hole.holeHandicap, p1, holeScoreViewModel)
+//      PlayerScore(it.golfer2, hole.holeHandicap, p2, holeScoreViewModel)
     }
 
     Row(
@@ -62,8 +62,8 @@ fun EnterScore(matchViewModel: MatchViewModel, navController: NavHostController)
     }
 
     matchViewModel.team2?.let {
-      PlayerScore(it.golfer1, hole.holeHandicap, p1, holeScoreViewModel)
-      PlayerScore(it.golfer2, hole.holeHandicap, p2, holeScoreViewModel)
+//      PlayerScore(it.golfer1, hole.holeHandicap, p1, holeScoreViewModel)
+//      PlayerScore(it.golfer2, hole.holeHandicap, p2, holeScoreViewModel)
     }
 
     Spacer(modifier = Modifier.weight(1.0f))

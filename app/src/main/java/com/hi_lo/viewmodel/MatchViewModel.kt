@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.hi_lo.Course
-import com.hi_lo.Hole
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 data class Team(val golfer1: Golfer, val golfer2: Golfer)
 
@@ -21,7 +22,9 @@ class MatchViewModel : ViewModel() {
     var team2: Team? = null
 
     var pricePerPoint: MutableLiveData<Int> = MutableLiveData(1)
-    var selectedCourse: Course? = null
+
+    private val _selectedCourse = MutableStateFlow<Course?>(null)
+    val selectedCourse: StateFlow<Course?> = _selectedCourse
 
     val team1Score: MutableLiveData<Int> = MutableLiveData(0)
     val team2Score: MutableLiveData<Int> = MutableLiveData(0)
@@ -36,7 +39,7 @@ class MatchViewModel : ViewModel() {
     }
 
     fun setupMatch() {
-        this._title.value = "Setup Match @ ${selectedCourse!!.name}"
+        this._title.value = "Setup Match @ ${selectedCourse.value?.name}"
     }
 
     fun startMatch(
@@ -50,17 +53,17 @@ class MatchViewModel : ViewModel() {
         if (useCourseHandicap) {
             this.team1 = Team(Golfer(name1, hcp1), Golfer(name2, hcp2))
         } else {
-            this.team1 = Team(
-                Golfer(name1, calculateGolferHandicap(hcp1)),
-                Golfer(name2, calculateGolferHandicap(hcp2))
-            )
+//            this.team1 = Team(
+//                Golfer(name1, calculateGolferHandicap(hcp1)),
+//                Golfer(name2, calculateGolferHandicap(hcp2))
+//            )
         }
         this.team2 = team2
     }
 
-    fun currentHole(): Hole {
-        return selectedCourse!!.holes[currentHole.value!!.minus(1)]
-    }
+//    fun currentHole(): Hole {
+//        return selectedCourse!!.holes[currentHole.value!!.minus(1)]
+//    }
 
     fun hasNextHole(): Boolean {
         return currentHole.value!! < 18
@@ -98,11 +101,15 @@ class MatchViewModel : ViewModel() {
         _title.value = "Setup Match"
     }
 
-    private fun calculateGolferHandicap(index: Int): Int {
-        selectedCourse?.let { course ->
-            return index.times(course.slope).div(113).plus(course.rating).minus(72).toInt()
-        }
-        throw IllegalStateException("Course must be selected")
+//    private fun calculateGolferHandicap(index: Int): Int {
+//        selectedCourse?.let { course ->
+//            return index.times(course.slope).div(113).plus(course.rating).minus(72).toInt()
+//        }
+//        throw IllegalStateException("Course must be selected")
+//    }
+
+    fun selectCourse(course: Course) {
+        _selectedCourse.value = course
     }
 
 }
