@@ -2,9 +2,9 @@ package com.hi_lo.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hi_lo.network.CourseService
 import com.hi_lo.SessionManager
 import com.hi_lo.network.AuthBody
+import com.hi_lo.network.CourseService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -73,6 +73,10 @@ class SessionViewModel @Inject constructor(
                 _uiState.value = _uiState.value.copy(isLoading = false)
             }
         }
+    }
+
+    fun clearError() {
+        _uiState.value = _uiState.value.copy(errorMessage = null)
     }
 
     private fun setSessionToken(token: String) {
