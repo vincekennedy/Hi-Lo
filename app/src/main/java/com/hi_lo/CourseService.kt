@@ -1,5 +1,7 @@
 package com.hi_lo
 
+import com.hi_lo.network.AuthBody
+import com.hi_lo.network.AuthResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
