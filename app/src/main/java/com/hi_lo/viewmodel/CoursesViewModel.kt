@@ -3,6 +3,7 @@ package com.hi_lo.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hi_lo.Course
+import com.hi_lo.SessionManager
 import com.hi_lo.network.CourseService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +20,7 @@ data class CoursesUiState(
 @HiltViewModel
 class CoursesViewModel @Inject constructor(
     private val courseService: CourseService,
-//    private val sessionManager: SessionManager
+    private val sessionManager: SessionManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(CoursesUiState())
     val uiState: StateFlow<CoursesUiState> = _uiState
@@ -32,7 +33,7 @@ class CoursesViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             try {
-                val token = ""//sessionManager.getSessionToken() ?: throw IllegalStateException("Token is null")
+                val token = sessionManager.getSessionToken() ?: throw IllegalStateException("Token is null")
                 val courses = courseService.getCourses(token)
                 _uiState.value = _uiState.value.copy(isLoading = false, courses = courses)
             } catch (e: Exception) {
