@@ -3,9 +3,12 @@ package com.hi_lo.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,7 +35,8 @@ fun CourseSelection(
 ) {
 
     val uiState by coursesViewModel.uiState.collectAsState()
-    val selectedCourse = matchViewModel.selectedCourse.value
+    val selectedCourse by matchViewModel.selectedCourse.collectAsState()
+
 
     LaunchedEffect(key1 = "onLaunch") {
         coursesViewModel.fetchCourses()
@@ -59,6 +63,17 @@ fun CourseSelection(
                     selectedCourse = selectedCourse,
                     onCourseSelected = { matchViewModel.selectCourse(it) }
                 )
+            }
+        }
+
+        // Show the button only if a course is selected
+        if (selectedCourse != null) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = onSetupClicked,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Continue to Setup")
             }
         }
     }
