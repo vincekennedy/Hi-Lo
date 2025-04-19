@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 data class CoursesUiState(
@@ -33,10 +34,13 @@ class CoursesViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             try {
+                Timber.i("Fetching courses")
                 val token = sessionManager.getSessionToken() ?: throw IllegalStateException("Token is null")
                 val courses = courseService.getCourses(token)
+                Timber.i("Fetched courses: $courses")
                 _uiState.value = _uiState.value.copy(isLoading = false, courses = courses)
             } catch (e: Exception) {
+                Timber.e(e, "Error fetching courses")
                 _uiState.value = _uiState.value.copy(isLoading = false, error = e.message)
             }
         }

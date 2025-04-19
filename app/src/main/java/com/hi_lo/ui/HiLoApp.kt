@@ -42,9 +42,12 @@ fun HiLoApp(
         content = { padding ->
             NavHost(
                 navController = navController,
-                startDestination = MatchScreen.LOGIN.name,
+                startDestination = MatchScreen.SESSION_CHECK.name,
                 modifier = modifier.padding(padding)
             ) {
+                composable(route = MatchScreen.SESSION_CHECK.name) {
+                    SessionCheckScreen(navController, sessionViewModel)
+                }
                 composable(route = MatchScreen.LOGIN.name) {
                     Login(navController, sessionViewModel)
                 }

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 data class LoginUiState(
@@ -21,6 +22,7 @@ data class LoginUiState(
 )
 
 sealed class LoginNavigationEvent {
+    object NavigateToLogin : LoginNavigationEvent()
     object NavigateToCourseSelect : LoginNavigationEvent()
 }
 
@@ -32,7 +34,7 @@ class SessionViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState
 
-    private val _navigationEvent = MutableSharedFlow<LoginNavigationEvent>()
+    private val _navigationEvent = MutableSharedFlow<LoginNavigationEvent>(replay = 1)
     val navigationEvent: SharedFlow<LoginNavigationEvent> = _navigationEvent
 
     fun onUsernameChange(newUsername: String) {
@@ -71,6 +73,21 @@ class SessionViewModel @Inject constructor(
                 _uiState.value = _uiState.value.copy(errorMessage = "An error occurred")
             } finally {
                 _uiState.value = _uiState.value.copy(isLoading = false)
+            }
+        }
+    }
+
+    fun checkSession() {
+        val token = sessionManager.getSessionToken()
+        if (token.isNullOrEmpty()) {
+            viewModelScope.launch {
+                Timber.d("Navigato to login")
+                _navigationEvent.emit(LoginNavigationEvent.NavigateToLogin)
+            }
+        } else {
+            viewModelScope.launch {
+                Timber.d("Navigato to course selection")
+                _navigationEvent.emit(LoginNavigationEvent.NavigateToCourseSelect)
             }
         }
     }

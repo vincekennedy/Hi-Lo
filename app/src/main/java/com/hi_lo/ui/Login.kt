@@ -38,9 +38,14 @@ fun Login(navController: NavController, viewModel: SessionViewModel) {
                 is LoginNavigationEvent.NavigateToCourseSelect -> {
                     navController.navigate(MatchScreen.COURSE_SELECT.name)
                 }
+
+                LoginNavigationEvent.NavigateToLogin -> {
+                    navController.navigate(MatchScreen.LOGIN.name)
+                }
             }
         }
     }
+
     uiState.value.errorMessage?.let { errorMessage ->
         Toast.makeText(
             LocalContext.current,
