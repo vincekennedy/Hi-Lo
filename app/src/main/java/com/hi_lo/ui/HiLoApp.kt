@@ -8,7 +8,6 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,7 +30,6 @@ fun HiLoApp(
 ) {
     val scaffoldState = rememberScaffoldState()
     var currentTitle by remember { mutableStateOf("Hi-Lo") }
-    val selectedCourse by matchViewModel.selectedCourse.collectAsState()
     val sessionViewModel: SessionViewModel = viewModel()
 
     Scaffold(
@@ -63,7 +61,7 @@ fun HiLoApp(
                     }
                 }
                 composable(route = MatchScreen.SETUP_MATCH.name) {
-                    currentTitle = "Setup Match at ${selectedCourse?.name}"
+                    currentTitle = "Setup Match"
                     SetupMatch(matchViewModel, navController)
                 }
                 composable(route = MatchScreen.SCORE.name) {

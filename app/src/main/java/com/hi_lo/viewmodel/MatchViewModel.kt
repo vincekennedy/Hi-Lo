@@ -41,14 +41,11 @@ class MatchViewModel : ViewModel() {
 
     fun startMatch(
         useCourseHandicap: Boolean,
-        name1: String,
-        hcp1: Int,
-        name2: String,
-        hcp2: Int,
+        team1: Team,
         team2: Team
     ) {
         if (useCourseHandicap) {
-            this.team1 = Team(Golfer(name1, hcp1), Golfer(name2, hcp2))
+//            this.team1 = Team(Golfer(name1, hcp1), Golfer(name2, hcp2))
         } else {
 //            this.team1 = Team(
 //                Golfer(name1, calculateGolferHandicap(hcp1)),

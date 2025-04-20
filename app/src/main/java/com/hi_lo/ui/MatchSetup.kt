@@ -55,8 +55,9 @@ fun SetupMatch(viewModel: MatchViewModel, navController: NavHostController) {
         team1Handicaps.value.first,
         team1Handicaps.value.second,
         team2Handicaps.value.first,
-        team2Handicaps.value.second
-    ).all { it.isNotEmpty() && it.isDigitsOnly() }
+        team2Handicaps.value.second,
+        pricePerPoint.value
+    ).all { it.isNotEmpty() }
 
     Column(modifier = Modifier.padding(8.dp)) {
         HandicapSwitch(courseHandicap)
@@ -127,10 +128,11 @@ fun SetupMatch(viewModel: MatchViewModel, navController: NavHostController) {
             onClick = {
                 viewModel.startMatch(
                     courseHandicap.value,
-                    name1.value,
-                    hcp1.value.toInt(),
-                    name2.value,
-                    hcp2.value.toInt(),
+                    Team(
+                        Golfer(name1.value, hcp1.value.toInt()),
+                        Golfer(name4.value, hcp2.value.toInt())
+                    ),
+
                     Team(
                         Golfer(name3.value, hcp3.value.toInt()),
                         Golfer(name4.value, hcp4.value.toInt())
