@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Button
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -36,7 +36,6 @@ fun CourseSelection(
 
     val uiState by coursesViewModel.uiState.collectAsState()
     val selectedCourse by matchViewModel.selectedCourse.collectAsState()
-
 
     LaunchedEffect(key1 = "onLaunch") {
         coursesViewModel.fetchCourses()

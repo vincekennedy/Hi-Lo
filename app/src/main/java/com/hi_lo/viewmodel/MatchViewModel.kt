@@ -15,7 +15,7 @@ data class Score(val playerNumber: Int, var strokes: Int = 0, var points: Int = 
 
 class MatchViewModel : ViewModel() {
 
-    private var _title: MutableLiveData<String> = MutableLiveData<String>("Course Select")
+    private var _title: MutableLiveData<String> = MutableLiveData<String>("Hi-Lo")
     val title: LiveData<String> get() = _title
 
     var team1: Team? = null
@@ -25,6 +25,7 @@ class MatchViewModel : ViewModel() {
 
     private val _selectedCourse = MutableStateFlow<Course?>(null)
     val selectedCourse: StateFlow<Course?> = _selectedCourse
+
 
     val team1Score: MutableLiveData<Int> = MutableLiveData(0)
     val team2Score: MutableLiveData<Int> = MutableLiveData(0)
@@ -36,10 +37,6 @@ class MatchViewModel : ViewModel() {
 
     fun addPointsToTeam2Score(pts: Int) {
         team2Score.value = team2Score.value?.plus(pts)
-    }
-
-    fun setupMatch() {
-        this._title.value = "Setup Match @ ${selectedCourse.value?.name}"
     }
 
     fun startMatch(

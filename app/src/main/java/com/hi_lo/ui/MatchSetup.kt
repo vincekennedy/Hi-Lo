@@ -86,14 +86,14 @@ fun SetupMatch(viewModel: MatchViewModel, navController: NavHostController) {
         Text("Team 2")
         TeamEntry(
             teamNames = team2Names, teamHandicaps = team2Handicaps, onNameChange = { index, name ->
-                team1Names.value =
-                    if (index == 0) team1Names.value.copy(first = name) else team1Names.value.copy(
+                team2Names.value =
+                    if (index == 0) team2Names.value.copy(first = name) else team2Names.value.copy(
                         second = name
                     )
             },
             onHandicapChange = { index, handicap ->
-                team1Handicaps.value =
-                    if (index == 0) team1Handicaps.value.copy(first = handicap) else team1Handicaps.value.copy(
+                team2Handicaps.value =
+                    if (index == 0) team2Handicaps.value.copy(first = handicap) else team2Handicaps.value.copy(
                         second = handicap
                     )
             })
