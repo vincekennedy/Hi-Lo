@@ -38,15 +38,6 @@ fun SetupMatch(viewModel: MatchViewModel, navController: NavHostController) {
     val pricePerPoint = remember { mutableStateOf("") }
     val courseHandicap = remember { mutableStateOf(false) }
 
-    val name1 = remember { mutableStateOf("") }
-    val hcp1 = remember { mutableStateOf("") }
-    val name2 = remember { mutableStateOf("") }
-    val hcp2 = remember { mutableStateOf("") }
-    val name3 = remember { mutableStateOf("") }
-    val hcp3 = remember { mutableStateOf("") }
-    val name4 = remember { mutableStateOf("") }
-    val hcp4 = remember { mutableStateOf("") }
-
     val enableStart = listOf(
         team1Names.value.first,
         team1Names.value.second,
@@ -126,19 +117,25 @@ fun SetupMatch(viewModel: MatchViewModel, navController: NavHostController) {
                 .fillMaxWidth()
                 .height(48.dp),
             onClick = {
-                viewModel.startMatch(
-                    courseHandicap.value,
-                    Team(
-                        Golfer(name1.value, hcp1.value.toInt()),
-                        Golfer(name4.value, hcp2.value.toInt())
-                    ),
+                val golfer1Handicap = team1Handicaps.value.first.toIntOrNull()
+                val golfer2Handicap = team1Handicaps.value.second.toIntOrNull()
+                val golfer3Handicap = team2Handicaps.value.first.toIntOrNull()
+                val golfer4Handicap = team2Handicaps.value.second.toIntOrNull()
 
-                    Team(
-                        Golfer(name3.value, hcp3.value.toInt()),
-                        Golfer(name4.value, hcp4.value.toInt())
+                if (golfer1Handicap != null && golfer2Handicap != null && golfer3Handicap != null && golfer4Handicap != null) {
+                    viewModel.startMatch(
+                        courseHandicap.value,
+                        Team(
+                            Golfer(team1Names.value.first, golfer1Handicap),
+                            Golfer(team1Names.value.second, golfer2Handicap)
+                        ),
+                        Team(
+                            Golfer(team2Names.value.first, golfer3Handicap),
+                            Golfer(team2Names.value.second, golfer4Handicap)
+                        )
                     )
-                )
-                navController.navigate(SCORE.name)
+                    navController.navigate(SCORE.name)
+                }
             },
             enabled = enableStart
         ) {
