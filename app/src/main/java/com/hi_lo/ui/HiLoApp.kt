@@ -13,7 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,12 +25,12 @@ import com.hi_lo.viewmodel.SessionViewModel
 @Composable
 fun HiLoApp(
     modifier: Modifier = Modifier,
-    matchViewModel: MatchViewModel = MatchViewModel(),
     navController: NavHostController = rememberNavController(),
 ) {
     val scaffoldState = rememberScaffoldState()
     var currentTitle by remember { mutableStateOf("Hi-Lo") }
-    val sessionViewModel: SessionViewModel = viewModel()
+    val matchViewModel: MatchViewModel = hiltViewModel()
+    val sessionViewModel: SessionViewModel = hiltViewModel()
 
     Scaffold(
         scaffoldState = scaffoldState,

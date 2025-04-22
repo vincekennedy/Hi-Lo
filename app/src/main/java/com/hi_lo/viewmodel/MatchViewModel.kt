@@ -3,17 +3,37 @@ package com.hi_lo.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hi_lo.Course
+import com.hi_lo.data.MatchRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
+import javax.inject.Inject
 
+@Serializable
+data class MatchData(
+    val team1: Team?,
+    val team2: Team?,
+    val currentHole: Int = 1,
+    val pricePerPoint: Int = 1
+)
+
+@Serializable
 data class Team(val golfer1: Golfer, val golfer2: Golfer)
 
+@Serializable
 class Golfer(val name: String, val hcp: Int)
 
 data class Score(val playerNumber: Int, var strokes: Int = 0, var points: Int = 0)
 
-class MatchViewModel : ViewModel() {
+@HiltViewModel
+class MatchViewModel @Inject constructor(
+    private val repository: MatchRepository
+) : ViewModel() {
 
     private var _title: MutableLiveData<String> = MutableLiveData<String>("Hi-Lo")
     val title: LiveData<String> get() = _title
@@ -30,6 +50,15 @@ class MatchViewModel : ViewModel() {
     val team1Score: MutableLiveData<Int> = MutableLiveData(0)
     val team2Score: MutableLiveData<Int> = MutableLiveData(0)
     private val currentHole: MutableLiveData<Int> = MutableLiveData(1)
+
+    val matchData: StateFlow<MatchData?> = repository.matchDataFlow
+        .stateIn(viewModelScope, started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000), null)
+
+    fun saveMatch(matchData: MatchData) {
+        viewModelScope.launch {
+            repository.saveMatchData(matchData)
+        }
+    }
 
     fun addPointsToTeam1Score(pts: Int) {
         team1Score.value = team1Score.value?.plus(pts)
@@ -52,6 +81,7 @@ class MatchViewModel : ViewModel() {
 //                Golfer(name2, calculateGolferHandicap(hcp2))
 //            )
         }
+        this.team1 = team1
         this.team2 = team2
     }
 
