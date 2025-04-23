@@ -27,10 +27,10 @@ import com.hi_lo.viewmodel.SessionViewModel
 fun HiLoApp(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
+    matchViewModel: MatchViewModel = hiltViewModel()
 ) {
     val scaffoldState = rememberScaffoldState()
     var currentTitle by remember { mutableStateOf("Hi-Lo") }
-    val matchViewModel: MatchViewModel = hiltViewModel()
     val sessionViewModel: SessionViewModel = hiltViewModel()
 
     LaunchedEffect(Unit) {
@@ -38,7 +38,7 @@ fun HiLoApp(
         if (matchData != null) {
             navController.navigate(MatchScreen.SCORE.name)
         } else {
-            navController.navigate(MatchScreen.SETUP_MATCH.name)
+            navController.navigate(MatchScreen.COURSE_SELECT.name)
         }
     }
 
@@ -66,7 +66,7 @@ fun HiLoApp(
                 }
                 composable(route = MatchScreen.COURSE_SELECT.name) {
                     currentTitle = "Select a Course"
-                    CourseSelection {
+                    CourseSelection(matchViewModel) {
                         navController.navigate(MatchScreen.SETUP_MATCH.name)
                     }
                 }

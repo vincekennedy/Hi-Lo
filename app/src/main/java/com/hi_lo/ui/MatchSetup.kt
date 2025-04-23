@@ -13,6 +13,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,9 +29,13 @@ import com.hi_lo.ui.MatchScreen.SCORE
 import com.hi_lo.viewmodel.Golfer
 import com.hi_lo.viewmodel.MatchViewModel
 import com.hi_lo.viewmodel.Team
+import timber.log.Timber
 
 @Composable
-fun SetupMatch(viewModel: MatchViewModel, navController: NavHostController) {
+fun SetupMatch(
+    matchViewModel: MatchViewModel,
+    navController: NavHostController
+) {
     val team1Names = remember { mutableStateOf(Pair("", "")) }
     val team1Handicaps = remember { mutableStateOf(Pair("", "")) }
     val team2Names = remember { mutableStateOf(Pair("", "")) }
@@ -50,9 +55,18 @@ fun SetupMatch(viewModel: MatchViewModel, navController: NavHostController) {
         pricePerPoint.value
     ).all { it.isNotEmpty() }
 
+    LaunchedEffect(Unit) {
+        matchViewModel.selectedCourse.collect { selectedCourse ->
+            if (selectedCourse != null) {
+                Timber.e("Selected Course: ${selectedCourse.name}")
+            } else {
+                Timber.e("No course selected")
+            }
+        }
+    }
+
     Column(modifier = Modifier.padding(8.dp)) {
         HandicapSwitch(courseHandicap)
-
         Spacer(modifier = Modifier.height(16.dp))
         Text("Team 1")
         TeamEntry(
@@ -103,7 +117,7 @@ fun SetupMatch(viewModel: MatchViewModel, navController: NavHostController) {
                     pricePerPoint.value = ""
                 } else if (it.isDigitsOnly()) {
                     pricePerPoint.value = it
-                    viewModel.pricePerPoint.value = it.toInt()
+                    matchViewModel.pricePerPoint.value = it.toInt()
                 }
             },
             keyboardOptions = KeyboardOptions(
@@ -123,7 +137,7 @@ fun SetupMatch(viewModel: MatchViewModel, navController: NavHostController) {
                 val golfer4Handicap = team2Handicaps.value.second.toIntOrNull()
 
                 if (golfer1Handicap != null && golfer2Handicap != null && golfer3Handicap != null && golfer4Handicap != null) {
-                    viewModel.startMatch(
+                    matchViewModel.startMatch(
                         courseHandicap.value,
                         Team(
                             Golfer(team1Names.value.first, golfer1Handicap),

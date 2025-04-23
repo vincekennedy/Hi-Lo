@@ -12,6 +12,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -30,15 +31,15 @@ import kotlin.math.min
 
 @Composable
 fun EnterScore(matchViewModel: MatchViewModel, navController: NavHostController) {
-//  val hole = matchViewModel.currentHole()
+  val hole = matchViewModel.currentHole()
   val showConfirmation = remember { mutableStateOf(false) }
   val p1 = remember { mutableStateOf(Score(1)) }
   val p2 = remember { mutableStateOf(Score(2)) }
   val p3 = remember { mutableStateOf(Score(3)) }
   val p4 = remember { mutableStateOf(Score(4)) }
 
-  val lowTeam = remember { mutableStateOf(0) }
-  val highTeam = remember { mutableStateOf(20) }
+  val lowTeam = remember { mutableIntStateOf(0) }
+  val highTeam = remember { mutableIntStateOf(20) }
   val holeScoreViewModel = HoleViewModel()
 
   Column(
@@ -47,8 +48,8 @@ fun EnterScore(matchViewModel: MatchViewModel, navController: NavHostController)
   ) {
 
     matchViewModel.team1?.let {
-//      PlayerScore(it.golfer1, hole.holeHandicap, p1, holeScoreViewModel)
-//      PlayerScore(it.golfer2, hole.holeHandicap, p2, holeScoreViewModel)
+      hole?.holeHandicap?.let { it1 -> PlayerScore(it.golfer1, it1, p1, holeScoreViewModel) }
+      hole?.holeHandicap?.let { it1 -> PlayerScore(it.golfer2, it1, p2, holeScoreViewModel) }
     }
 
     Row(
@@ -62,8 +63,8 @@ fun EnterScore(matchViewModel: MatchViewModel, navController: NavHostController)
     }
 
     matchViewModel.team2?.let {
-//      PlayerScore(it.golfer1, hole.holeHandicap, p1, holeScoreViewModel)
-//      PlayerScore(it.golfer2, hole.holeHandicap, p2, holeScoreViewModel)
+      hole?.holeHandicap?.let { it1 -> PlayerScore(it.golfer1, it1, p1, holeScoreViewModel) }
+      hole?.holeHandicap?.let { it1 -> PlayerScore(it.golfer2, it1, p2, holeScoreViewModel) }
     }
 
     Spacer(modifier = Modifier.weight(1.0f))

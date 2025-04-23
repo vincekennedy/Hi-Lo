@@ -29,7 +29,7 @@ import com.hi_lo.viewmodel.MatchViewModel
 
 @Composable
 fun CourseSelection(
-    matchViewModel: MatchViewModel = hiltViewModel(),
+    matchViewModel: MatchViewModel,
     coursesViewModel: CoursesViewModel = hiltViewModel(),
     onSetupClicked: () -> Unit
 ) {
@@ -60,7 +60,9 @@ fun CourseSelection(
                 CourseSelectDropdown(
                     courses = uiState.courses,
                     selectedCourse = selectedCourse,
-                    onCourseSelected = { matchViewModel.selectCourse(it) }
+                    onCourseSelected = {
+                        matchViewModel.selectCourse(it)
+                    }
                 )
             }
         }

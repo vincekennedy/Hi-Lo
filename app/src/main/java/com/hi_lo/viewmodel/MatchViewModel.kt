@@ -5,16 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hi_lo.Course
+import com.hi_lo.Hole
 import com.hi_lo.data.MatchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import timber.log.Timber
 import javax.inject.Inject
 
 @Serializable
 data class MatchData(
+    val course: Course,
     val team1: Team?,
     val team2: Team?,
     val currentHole: Int = 1,
@@ -45,10 +48,15 @@ class MatchViewModel @Inject constructor(
     private val _selectedCourse = MutableStateFlow<Course?>(null)
     val selectedCourse: StateFlow<Course?> = _selectedCourse
 
+    fun selectCourse(course: Course) {
+        Timber.e("Course selected $course")
+        _selectedCourse.value = course
+    }
 
     val team1Score: MutableLiveData<Int> = MutableLiveData(0)
     val team2Score: MutableLiveData<Int> = MutableLiveData(0)
     private val currentHole: MutableLiveData<Int> = MutableLiveData(1)
+    private var matchData: MatchData? = null
 
     fun saveMatchData(matchData: MatchData) {
         viewModelScope.launch {
@@ -57,7 +65,10 @@ class MatchViewModel @Inject constructor(
     }
 
     suspend fun loadMatchData(): MatchData? {
-        return repository.loadMatchData()
+        matchData = repository.loadMatchData()
+        this.currentHole.value = matchData?.currentHole
+        this._selectedCourse.value = matchData?.course
+        return matchData
     }
     fun addPointsToTeam1Score(pts: Int) {
         team1Score.value = team1Score.value?.plus(pts)
@@ -82,13 +93,16 @@ class MatchViewModel @Inject constructor(
         }
         this.team1 = team1
         this.team2 = team2
-        val matchData = MatchData(team1, team2, 1, 1)
-        saveMatchData(matchData = matchData)
+        this.currentHole.value = 1
+        val matchData = this._selectedCourse.value?.let { MatchData(it, team1, team2, 1, pricePerPoint.value!!) }
+        if (matchData != null) {
+            saveMatchData(matchData = matchData)
+        }
     }
 
-//    fun currentHole(): Hole {
-//        return selectedCourse!!.holes[currentHole.value!!.minus(1)]
-//    }
+    fun currentHole(): Hole? {
+        return matchData?.currentHole?.minus(1)?.let { selectedCourse.value?.holes?.get(it) }
+    }
 
     fun hasNextHole(): Boolean {
         return currentHole.value!! < 18
@@ -134,8 +148,5 @@ class MatchViewModel @Inject constructor(
 //        throw IllegalStateException("Course must be selected")
 //    }
 
-    fun selectCourse(course: Course) {
-        _selectedCourse.value = course
-    }
 
 }

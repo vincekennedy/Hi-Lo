@@ -2,6 +2,7 @@ package com.hi_lo.data
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
+import com.hi_lo.Course
 import com.hi_lo.viewmodel.Golfer
 import com.hi_lo.viewmodel.MatchData
 import com.hi_lo.viewmodel.Team
@@ -12,6 +13,7 @@ import java.io.OutputStream
 
 object MatchDataSerializer : Serializer<MatchData> {
     override val defaultValue: MatchData = MatchData(
+        course = Course(),
         team1 = Team(Golfer("", 0), Golfer("", 0)),
         team2 = Team(Golfer("", 0), Golfer("", 0)),
         pricePerPoint = 0,
