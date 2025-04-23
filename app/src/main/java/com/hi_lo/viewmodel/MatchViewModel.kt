@@ -66,6 +66,8 @@ class MatchViewModel @Inject constructor(
         matchData = repository.loadMatchData()
         this.currentHole.value = matchData?.currentHole
         this._selectedCourse.value = matchData?.course
+        this.team1 = matchData?.team1
+        this.team2 = matchData?.team2
         return matchData
     }
     fun addPointsToTeam1Score(pts: Int) {
