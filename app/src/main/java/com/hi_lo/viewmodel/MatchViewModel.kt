@@ -116,7 +116,7 @@ class MatchViewModel @Inject constructor(
     }
 
     fun currentHole(): Hole? {
-        return matchData?.currentHole?.minus(1)?.let { selectedCourse.value?.holes?.get(it) }
+        return currentHole.value?.minus(1)?.let { selectedCourse.value?.holes?.get(it) }
     }
 
     fun hasNextHole(): Boolean {
@@ -125,6 +125,7 @@ class MatchViewModel @Inject constructor(
 
     fun nextHole() {
         currentHole.value = currentHole.value?.inc()
+        updateTitle()
     }
 
     fun getFinalScore(): String {

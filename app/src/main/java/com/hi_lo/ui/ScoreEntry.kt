@@ -47,9 +47,9 @@ fun EnterScore(matchViewModel: MatchViewModel, navController: NavHostController)
     verticalArrangement = Arrangement.Center
   ) {
 
-    matchViewModel.team1?.let {
-      hole?.holeHandicap?.let { it1 -> PlayerScore(it.golfer1, it1, p1, holeScoreViewModel) }
-      hole?.holeHandicap?.let { it1 -> PlayerScore(it.golfer2, it1, p2, holeScoreViewModel) }
+    matchViewModel.team1?.let { team1 ->
+      hole?.holeHandicap?.let { it1 -> PlayerScore(team1.golfer1, it1, p1, holeScoreViewModel) }
+      hole?.holeHandicap?.let { it1 -> PlayerScore(team1.golfer2, it1, p2, holeScoreViewModel) }
     }
 
     Row(
@@ -63,8 +63,8 @@ fun EnterScore(matchViewModel: MatchViewModel, navController: NavHostController)
     }
 
     matchViewModel.team2?.let {
-      hole?.holeHandicap?.let { it1 -> PlayerScore(it.golfer1, it1, p1, holeScoreViewModel) }
-      hole?.holeHandicap?.let { it1 -> PlayerScore(it.golfer2, it1, p2, holeScoreViewModel) }
+      hole?.holeHandicap?.let { it1 -> PlayerScore(it.golfer1, it1, p3, holeScoreViewModel) }
+      hole?.holeHandicap?.let { it1 -> PlayerScore(it.golfer2, it1, p4, holeScoreViewModel) }
     }
 
     Spacer(modifier = Modifier.weight(1.0f))
@@ -175,10 +175,7 @@ fun calculateHighLowScores(
     }
   }
 
-
-
   return Pair(lowTeam, highTeam)
-
 }
 
 fun calculatePointsEarned(matchViewModel: MatchViewModel, playerPoints: List<Int>) {
