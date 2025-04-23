@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import timber.log.Timber
 import javax.inject.Inject
 
 @Serializable
@@ -49,7 +48,6 @@ class MatchViewModel @Inject constructor(
     val selectedCourse: StateFlow<Course?> = _selectedCourse
 
     fun selectCourse(course: Course) {
-        Timber.e("Course selected $course")
         _selectedCourse.value = course
     }
 

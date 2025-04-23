@@ -13,7 +13,6 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,7 +28,6 @@ import com.hi_lo.ui.MatchScreen.SCORE
 import com.hi_lo.viewmodel.Golfer
 import com.hi_lo.viewmodel.MatchViewModel
 import com.hi_lo.viewmodel.Team
-import timber.log.Timber
 
 @Composable
 fun SetupMatch(
@@ -54,16 +52,6 @@ fun SetupMatch(
         team2Handicaps.value.second,
         pricePerPoint.value
     ).all { it.isNotEmpty() }
-
-    LaunchedEffect(Unit) {
-        matchViewModel.selectedCourse.collect { selectedCourse ->
-            if (selectedCourse != null) {
-                Timber.e("Selected Course: ${selectedCourse.name}")
-            } else {
-                Timber.e("No course selected")
-            }
-        }
-    }
 
     Column(modifier = Modifier.padding(8.dp)) {
         HandicapSwitch(courseHandicap)
