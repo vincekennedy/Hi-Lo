@@ -9,10 +9,8 @@ import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -30,8 +28,9 @@ fun HiLoApp(
     matchViewModel: MatchViewModel = hiltViewModel()
 ) {
     val scaffoldState = rememberScaffoldState()
-    var currentTitle by remember { mutableStateOf("Hi-Lo") }
     val sessionViewModel: SessionViewModel = hiltViewModel()
+    val title by matchViewModel.title.collectAsState()
+
 
     LaunchedEffect(Unit) {
         val matchData = matchViewModel.loadMatchData()
@@ -47,7 +46,7 @@ fun HiLoApp(
         topBar = {
             TopAppBar(
                 navigationIcon = null, title = {
-                    Text(text = currentTitle)
+                    Text(text = title)
                 }, backgroundColor = MaterialTheme.colors.primarySurface
             )
         },
@@ -61,17 +60,14 @@ fun HiLoApp(
                     SessionCheckScreen(navController, sessionViewModel)
                 }
                 composable(route = MatchScreen.LOGIN.name) {
-                    currentTitle = "Login"
                     Login(navController, sessionViewModel)
                 }
                 composable(route = MatchScreen.COURSE_SELECT.name) {
-                    currentTitle = "Select a Course"
                     CourseSelection(matchViewModel) {
                         navController.navigate(MatchScreen.SETUP_MATCH.name)
                     }
                 }
                 composable(route = MatchScreen.SETUP_MATCH.name) {
-                    currentTitle = "Setup Match"
                     SetupMatch(matchViewModel, navController)
                 }
                 composable(route = MatchScreen.SCORE.name) {

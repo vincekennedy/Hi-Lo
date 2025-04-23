@@ -1,6 +1,5 @@
 package com.hi_lo.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,8 +35,21 @@ class MatchViewModel @Inject constructor(
     private val repository: MatchRepository
 ) : ViewModel() {
 
-    private var _title: MutableLiveData<String> = MutableLiveData<String>("Hi-Lo")
-    val title: LiveData<String> get() = _title
+    private val _title = MutableStateFlow("")
+    val title: StateFlow<String> = _title
+
+    private fun updateTitle() {
+        val hole = currentHole.value
+        val course = selectedCourse.value
+        if (hole != null && course != null) {
+            val holeDetails = course.holes.find { it.holeNumber == hole }
+            if (holeDetails != null) {
+                _title.value = "Hole ${holeDetails.holeNumber} - Par ${holeDetails.holePar} - Hcp ${holeDetails.holeHandicap}"
+            }
+        } else {
+            _title.value = "Match Setup"
+        }
+    }
 
     var team1: Team? = null
     var team2: Team? = null
@@ -64,10 +76,13 @@ class MatchViewModel @Inject constructor(
 
     suspend fun loadMatchData(): MatchData? {
         matchData = repository.loadMatchData()
-        this.currentHole.value = matchData?.currentHole
-        this._selectedCourse.value = matchData?.course
-        this.team1 = matchData?.team1
-        this.team2 = matchData?.team2
+        if (matchData != null) {
+            this.currentHole.value = matchData?.currentHole
+            this._selectedCourse.value = matchData?.course
+            this.team1 = matchData?.team1
+            this.team2 = matchData?.team2
+            updateTitle()
+        }
         return matchData
     }
     fun addPointsToTeam1Score(pts: Int) {
