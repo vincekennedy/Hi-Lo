@@ -8,6 +8,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +32,15 @@ fun HiLoApp(
     var currentTitle by remember { mutableStateOf("Hi-Lo") }
     val matchViewModel: MatchViewModel = hiltViewModel()
     val sessionViewModel: SessionViewModel = hiltViewModel()
+
+    LaunchedEffect(Unit) {
+        val matchData = matchViewModel.loadMatchData()
+        if (matchData != null) {
+            navController.navigate(MatchScreen.SCORE.name)
+        } else {
+            navController.navigate(MatchScreen.SETUP_MATCH.name)
+        }
+    }
 
     Scaffold(
         scaffoldState = scaffoldState,

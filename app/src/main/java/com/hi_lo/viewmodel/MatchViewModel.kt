@@ -9,7 +9,6 @@ import com.hi_lo.data.MatchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import javax.inject.Inject
@@ -51,15 +50,15 @@ class MatchViewModel @Inject constructor(
     val team2Score: MutableLiveData<Int> = MutableLiveData(0)
     private val currentHole: MutableLiveData<Int> = MutableLiveData(1)
 
-    val matchData: StateFlow<MatchData?> = repository.matchDataFlow
-        .stateIn(viewModelScope, started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000), null)
-
-    fun saveMatch(matchData: MatchData) {
+    fun saveMatchData(matchData: MatchData) {
         viewModelScope.launch {
             repository.saveMatchData(matchData)
         }
     }
 
+    suspend fun loadMatchData(): MatchData? {
+        return repository.loadMatchData()
+    }
     fun addPointsToTeam1Score(pts: Int) {
         team1Score.value = team1Score.value?.plus(pts)
     }
@@ -83,6 +82,8 @@ class MatchViewModel @Inject constructor(
         }
         this.team1 = team1
         this.team2 = team2
+        val matchData = MatchData(team1, team2, 1, 1)
+        saveMatchData(matchData = matchData)
     }
 
 //    fun currentHole(): Hole {
@@ -124,6 +125,7 @@ class MatchViewModel @Inject constructor(
         currentHole.value = 1
         _title.value = "Setup Match"
     }
+
 
 //    private fun calculateGolferHandicap(index: Int): Int {
 //        selectedCourse?.let { course ->
